@@ -1,0 +1,92 @@
+#!/bin/bash
+##########################
+##   DEFAULT SETTINGS   ##
+##########################
+PathMicroscopy="/Users/vicente/Desktop/"
+
+ExpName="Testing stuff"
+ExpDate=$(date +%Y-%m-%d)
+PosPerCond=3
+
+##########################
+
+echo "> Name of the experiment? (Default: \"$ExpName\")"
+read userExpName
+if [ -n "$userExpName" ]; then
+   ExpName=$userExpName
+fi
+
+echo "> Date of the experiment? (Default: $ExpDate)"
+read userExpDate
+if [ -n "$userExpDate" ]; then
+   ExpDate=$userExpDate
+fi
+
+echo "> Can you confirm path to Microscopy folder? (Press \"Enter\")"
+echo "> Currently: $PathMicroscopy"
+read userPathMicroscopy
+if [ -n "$userPathMicroscopy" ]; then
+   PathMicroscopy=$userPathMicroscopy
+fi
+
+cd "$PathMicroscopy"
+
+if [ -e "($ExpDate) $ExpName/" ]; then
+    echo "Already exists! Try another name."
+    exit 1
+fi
+mkdir "($ExpDate) $ExpName"
+cd "($ExpDate) $ExpName"
+echo "Creating directory for \"($ExpDate) $ExpName\"..."
+
+mkdir "Experimental procedures"
+echo "Creating directory for protocols and experimental procedures..."
+
+mkdir "Data"
+echo "Creating directory for data..."
+
+mkdir "Results"
+echo "Creating directory for results..."
+
+cd "Data"
+
+CurrentPos=1
+CurrentCondition=1
+
+while true; do
+    echo
+    echo
+    echo "#####################"
+    echo "##   Condition $CurrentCondition   ##"
+    echo "#####################"
+    echo "(Press Ctrl-c if you are done adding all your conditions.)"
+    while [ -z "$currentConditionName" ]; do
+       echo "> Name of condition?"
+        read currentConditionName
+    done
+
+    echo "> Number of positions for this condition? (Default: $PosPerCond)"
+    read userPosPerCond
+    if [ -n "$userPosPerCond" ]; then
+        PosPerCond=$userPosPerCond
+    fi
+
+    mkdir "$currentConditionName"
+
+    prevPos=$CurrentPos
+
+    for j in $(seq 1 $PosPerCond); do
+        mkdir "$currentConditionName/$CurrentPos"
+        echo "Creating directory for \"$currentConditionName/$CurrentPos\"..."
+        if [ $j -eq $PosPerCond ]; then
+            newPos=$CurrentPos
+        fi
+        CurrentPos=$(echo "$CurrentPos+1" | bc)
+    done
+
+    mv "$currentConditionName/" "($prevPos-$newPos) $currentConditionName/"
+    echo "Renaming \"$currentConditionName/\" to \"($prevPos-$newPos) $currentConditionName/\"..."
+
+    currentConditionName=""
+    CurrentCondition=$(echo "$CurrentCondition+1" | bc)
+done

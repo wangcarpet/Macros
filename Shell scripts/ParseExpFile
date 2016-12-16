@@ -1,0 +1,15 @@
+#!/bin/bash
+
+for file in *.TIF ; do
+    ExpName=$(echo $file | cut -d'_' -f1)
+    Channel=$(echo $file | cut -d'_' -f2)
+    Position=$(echo $file | cut -d'_' -f3 | sed "s/[^0-9]//g;s/^$/-1/;")
+    Time=$(echo $file | cut -d'_' -f4 | sed "s/[^0-9]//g;s/^$/-1/;")
+    if [ ! -e "$Position/" ]; then
+        mkdir "$Position"
+    fi
+    if [ ! -e "$Position/$Channel/" ]; then
+        mkdir "$Position/$Channel"
+    fi
+    mv "$file" "$Position/$Channel"
+done
