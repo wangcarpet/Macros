@@ -6,12 +6,5 @@ macro "Rename Labels in Results Table" {
 	print(newLabel);
     setResult("Label", i, newLabel);
     setResult("ID", i, newLabel);
-
-//oldLabel = getResultLabel(0);
-//splitLabelel = split(oldLabel,":");
-//print(spellitLabel[0]);
-//print(spellitLabel[1]);
-//print(spellitLabel[2]);
-
   }
 }

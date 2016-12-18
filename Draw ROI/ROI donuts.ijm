@@ -1,6 +1,6 @@
 // Settings
-Dilate_Out = 30;
-Dilate_In = 10;
+Dilate_Out = 10;
+Dilate_In = 3;
 
 //Dialog.create("Config");
 //Dialog.addNumber("Dilate (inner):", Dilate_In);
@@ -8,15 +8,6 @@ Dilate_In = 10;
 //Dialog.show();
 //Dilate_In = Dialog.getNumber();
 //Dilate_Out = Dialog.getNumber();
-
-// Get ROI
-//waitForUser("This will take all your ROIs and create a donut around them.");
-ROInumber = roiManager("count");
-//for (i=0; i<ROInumber; i++) {
-//    ROINumber = ROINumber + 1;
-//    roiManager("Select", i);
-//    roiManager("Rename", "Cell" + ROINumber + "_Nucleus");
-//}
 
 OriginalImageID = getImageID();
 setBatchMode(true);
