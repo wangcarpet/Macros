@@ -5,4 +5,4 @@ while read message; do
     osascript -e "display notification \"$message\" with title \"$title\""
     sleep 3
     echo $message
-done < ~/Desktop/TODO
+done < ~/Documents/TODO.txt

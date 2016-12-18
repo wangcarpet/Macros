@@ -1,4 +1,8 @@
 #!/bin/bash
+###############################################
+# Quickly parse and sort metamorph .tif files #
+#    "ExpName_wChannel_sPosition_tTime.tif"   #
+###############################################
 
 for file in *.TIF ; do
     ExpName=$(echo $file | cut -d'_' -f1)

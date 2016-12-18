@@ -2,7 +2,7 @@
 ##########################
 ##   DEFAULT SETTINGS   ##
 ##########################
-PathMicroscopy="/Users/vicente/Desktop/"
+PathMicroscopy="$HOME/Desktop/"
 
 ExpName="Testing stuff"
 ExpDate=$(date +%Y-%m-%d)
@@ -48,8 +48,6 @@ echo "Creating directory for data..."
 mkdir "Results"
 echo "Creating directory for results..."
 
-cd "Data"
-
 CurrentPos=1
 CurrentCondition=1
 
@@ -71,12 +69,13 @@ while true; do
         PosPerCond=$userPosPerCond
     fi
 
-    mkdir "$currentConditionName"
+    mkdir "Data/$currentConditionName"
+    mkdir "Results/$currentConditionName"
 
     prevPos=$CurrentPos
 
     for j in $(seq 1 $PosPerCond); do
-        mkdir "$currentConditionName/$CurrentPos"
+        mkdir "Data/$currentConditionName/$CurrentPos"
         echo "Creating directory for \"$currentConditionName/$CurrentPos\"..."
         if [ $j -eq $PosPerCond ]; then
             newPos=$CurrentPos
@@ -84,7 +83,7 @@ while true; do
         CurrentPos=$(echo "$CurrentPos+1" | bc)
     done
 
-    mv "$currentConditionName/" "($prevPos-$newPos) $currentConditionName/"
+    mv "Data/$currentConditionName/" "Data/($prevPos-$newPos) $currentConditionName/"
     echo "Renaming \"$currentConditionName/\" to \"($prevPos-$newPos) $currentConditionName/\"..."
 
     currentConditionName=""
