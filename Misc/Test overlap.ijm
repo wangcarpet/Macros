@@ -6,6 +6,6 @@ for (i=1 ; i <ROInumber ; i++){
 	roiManager("AND");
 	if (selectionType() != -1){
 		CurrentROI = i+1;
-		print(CurrentROI + " : Selection overlaps!");
+		print(CurrentROI + " : ROIs overlap!");
 	}
 }
