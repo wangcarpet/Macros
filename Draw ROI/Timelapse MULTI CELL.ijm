@@ -1,12 +1,12 @@
 //###### Settings ########
-MinMaxSize="100-1000"
-ThresholdMethod="Huang"
+MinMaxSize="1000-5000"
+ThresholdMethod="Li"
+CurrentCell=1;
 
 //########################
 
 getDimensions(width, height, channels, slices, frames);
 LastTime=slices;
-CurrentCell=1;
 
 do {
     waitForUser("Add ROI for the cell you want to follow");
@@ -20,22 +20,21 @@ do {
     setAutoThreshold(ThresholdMethod + " dark");
     run("Convert to Mask", "method=" + ThresholdMethod + " background=Dark");
 
+    waitForUser("Any treatment to binary mask? (Watershed...)");
+
     for (Time=Original_Cell_SLICE + 1; Time <=LastTime ; Time++) {
         Found=0;
         setSlice(Time);
-        print(getSliceNumber());
         run("Select None");
         run("Duplicate...", "duplicate");
         run("Analyze Particles...", "size=" + MinMaxSize + " exclude include add in_situ slice");
         print(getSliceNumber());
         CurrentTime_ROInumber = roiManager("count");
         for (i=CurrentTime_ROInumber - 1 ; i > Cell_prevFrame ; i--){
-            print("i="+i);
             OverlapTest = newArray(Cell_prevFrame, i);
             roiManager("Select", OverlapTest);
             roiManager("AND");
             if (selectionType() == -1){
-                print("Delete "+i);
                 roiManager("Deselect");
                 roiManager("Select", i);
                 roiManager("Delete");
