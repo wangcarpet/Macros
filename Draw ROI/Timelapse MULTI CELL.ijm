@@ -1,7 +1,7 @@
 //###### Settings ########
 MinMaxSize="500-10000"
 ThresholdMethod="Otsu"
-CurrentCell=3;
+CurrentCell=1;
 
 //########################
 
