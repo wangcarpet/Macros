@@ -1,7 +1,7 @@
 //###### Settings ########
-MinMaxSize="1000-5000"
-ThresholdMethod="Li"
-CurrentCell=1;
+MinMaxSize="500-10000"
+ThresholdMethod="Otsu"
+CurrentCell=3;
 
 //########################
 
@@ -9,11 +9,17 @@ getDimensions(width, height, channels, slices, frames);
 LastTime=slices;
 
 do {
-    waitForUser("Add ROI for the cell you want to follow");
+    waitForUser("Add ROI for the cell you want to follow and take time to try different thresholding methods (last used: " + ThresholdMethod + ")");
     Cell_prevFrame=roiManager("count")-1;
     roiManager("Select", Cell_prevFrame);
     Original_Cell_SLICE = getSliceNumber();
     roiManager("Rename", "Cell" + CurrentCell + "_t" + Original_Cell_SLICE);
+
+    Dialog.create("Config");
+    Dialog.addChoice("Threshold:", newArray(ThresholdMethod, "Huang", "Li", "Triangle", "Default", "Intermodes", "IsoData", "IJ_IsoData", "MaxEntropy", "Mean", "MinError", "Minimum", "Moments", "Otsu", "Percentile", "RenyiEntropy", "Shanbhag", "Yen"));
+    Dialog.show();
+    ThresholdMethod = Dialog.getChoice();
+
 
     run("Select None");
     run("Duplicate...", "duplicate");
@@ -28,7 +34,6 @@ do {
         run("Select None");
         run("Duplicate...", "duplicate");
         run("Analyze Particles...", "size=" + MinMaxSize + " exclude include add in_situ slice");
-        print(getSliceNumber());
         CurrentTime_ROInumber = roiManager("count");
         for (i=CurrentTime_ROInumber - 1 ; i > Cell_prevFrame ; i--){
             OverlapTest = newArray(Cell_prevFrame, i);
